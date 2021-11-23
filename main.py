@@ -52,7 +52,8 @@ class Rock(pygame.sprite.Sprite):
   def update(self):
       self.rect.y += self.speedy
       self.rect.x += self.speedx
-      if self.rect.top > HEIGHT:
+      if self.rect.top > HEIGHT or self.rect.left > WIDTH or self.rect.right < 0:
+        self.rect.x = random.randrange(0, WIDTH - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
         self.speedy = random.randrange(2, 10)
         self.speedx = random.randrange(-3, 3)        

@@ -55,8 +55,9 @@ class Rock(pygame.sprite.Sprite):
 all_sprites = pygame.sprite.Group()
 player = Player()
 all_sprites.add(player)
-rock = Rock()
-all_sprites.add(rock) 
+for i in range(8):
+    r = Rock()
+    all_sprites.add(r)
 
 #game loop
 running  = True

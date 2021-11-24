@@ -9,6 +9,7 @@ HEIGHT = 500
 WHITE = (255,255,255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+YELLOW = (255, 255, 0)
 
 #Game initialization and creating Windows
 pygame.init()
@@ -38,6 +39,11 @@ class Player(pygame.sprite.Sprite):
       if self.rect.left < 0:
         self.rect.left = 0
 
+  def shoot(self):
+      bullet = Bullet(self.rect.centerx, self.rect.top)
+      all_sprites.add(bullet)
+
+
 class Rock(pygame.sprite.Sprite):
   def __init__(self):
       pygame.sprite.Sprite.__init__(self)
@@ -58,6 +64,21 @@ class Rock(pygame.sprite.Sprite):
         self.speedy = random.randrange(2, 10)
         self.speedx = random.randrange(-3, 3)        
 
+class Bullet(pygame.sprite.Sprite):
+  def __init__(self, x, y):
+      pygame.sprite.Sprite.__init__(self)
+      self.image = pygame.Surface((10, 20))
+      self.image.fill(YELLOW)
+      self.rect = self.image.get_rect()
+      self.rect.centerx = x
+      self.rect.bottom = y
+      self.speedy = -10
+      
+
+  def update(self):
+      self.rect.y += self.speedy
+      if self.rect.bottom < 0:
+          self.kill()
 
 all_sprites = pygame.sprite.Group()
 player = Player()
@@ -75,6 +96,9 @@ while running:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       running = False
+    elif event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_SPACE:
+            player.shoot()
 
   #update game
   all_sprites.update()

@@ -6,6 +6,7 @@ FPS = 60
 WIDTH = 500
 HEIGHT = 500
 
+BLACK = (0, 0, 0)
 WHITE = (255,255,255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
@@ -42,6 +43,7 @@ class Player(pygame.sprite.Sprite):
   def shoot(self):
       bullet = Bullet(self.rect.centerx, self.rect.top)
       all_sprites.add(bullet)
+      bullets.add(bullet)
 
 
 class Rock(pygame.sprite.Sprite):
@@ -81,11 +83,14 @@ class Bullet(pygame.sprite.Sprite):
           self.kill()
 
 all_sprites = pygame.sprite.Group()
+rocks = pygame.sprite.Group()
+bullets = pygame.sprite.Group()
 player = Player()
 all_sprites.add(player)
 for i in range(8):
     r = Rock()
     all_sprites.add(r)
+    rocks.add(r)
 
 #game loop
 running  = True
@@ -101,10 +106,11 @@ while running:
             player.shoot()
 
   #update game
-  all_sprites.update()
+  all_sprites.update() 
+  pygame.sprite.groupcollide(rocks, bullets, True, True)
 
   #display screen
-  screen.fill(WHITE)
+  screen.fill(BLACK)
   all_sprites.draw(screen)
   pygame.display.update()
 

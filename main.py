@@ -107,7 +107,11 @@ while running:
 
   #update game
   all_sprites.update() 
-  pygame.sprite.groupcollide(rocks, bullets, True, True)
+  hits = pygame.sprite.groupcollide(rocks, bullets, True, True)
+  for hit in hits:
+      r = Rock()
+      all_sprites.add(r)
+      rocks.add(r)
 
   #display screen
   screen.fill(BLACK)

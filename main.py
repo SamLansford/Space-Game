@@ -113,6 +113,10 @@ while running:
       all_sprites.add(r)
       rocks.add(r)
 
+  hits = pygame.sprite.spritecollide(player, rocks, False)
+  if hits:
+      running = False
+
   #display screen
   screen.fill(BLACK)
   all_sprites.draw(screen)

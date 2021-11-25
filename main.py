@@ -20,13 +20,18 @@ pygame.display.set_caption("Space Game")
 clock = pygame.time.Clock()
 
 #Insert imagimages 
-background_img = pygame.image.load(os.path.join("img", "background.png"))
+background_img = pygame.image.load(os.path.join("img", "background.png")).convert()
+player_img = pygame.image.load(os.path.join("img", "player.ico")).convert()
+bullet_img = pygame.image.load(os.path.join("img", "bullet.png")).convert()
+rock_img = pygame.image.load(os.path.join("img", "rock.png")).convert()
+
+
 
 class Player(pygame.sprite.Sprite):
   def __init__(self):
       pygame.sprite.Sprite.__init__(self)
-      self.image = pygame.Surface((50, 40))
-      self.image.fill(GREEN)
+      self.image = pygame.transform.scale(player_img, (50, 38))
+      self.image.set_colorkey(BLACK)
       self.rect = self.image.get_rect()
       self.rect.centerx = WIDTH / 2
       self.rect.bottom = HEIGHT - 10

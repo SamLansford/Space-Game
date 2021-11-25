@@ -1,6 +1,7 @@
 #sprite
 import pygame
 import random
+import os
 
 FPS = 60
 WIDTH = 500
@@ -17,6 +18,9 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Game")
 clock = pygame.time.Clock()
+
+#Insert imagimages 
+background_img = pygame.image.load(os.path.join("img", "background.png"))
 
 class Player(pygame.sprite.Sprite):
   def __init__(self):
@@ -119,6 +123,7 @@ while running:
 
   #display screen
   screen.fill(BLACK)
+  screen.blit(background_img, (0,0))
   all_sprites.draw(screen)
   pygame.display.update()
 

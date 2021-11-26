@@ -58,12 +58,12 @@ class Player(pygame.sprite.Sprite):
 class Rock(pygame.sprite.Sprite):
   def __init__(self):
       pygame.sprite.Sprite.__init__(self)
-      self.image = pygame.Surface((30, 40))
-      self.image.fill(RED)
+      self.image = rock_img
+      self.image.set_colorkey(BLACK)
       self.rect = self.image.get_rect()
       self.rect.x = random.randrange(0, WIDTH - self.rect.width)
       self.rect.y = random.randrange(-100, -40) 
-      self.speedy = random.randrange(2, 10)
+      self.speedy = random.randrange(3, 8)
       self.speedx = random.randrange(-3, 3)
 
   def update(self):
@@ -78,8 +78,8 @@ class Rock(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
   def __init__(self, x, y):
       pygame.sprite.Sprite.__init__(self)
-      self.image = pygame.Surface((10, 20))
-      self.image.fill(YELLOW)
+      self.image = bullet_img
+      self.image.set_colorkey(BLACK)
       self.rect = self.image.get_rect()
       self.rect.centerx = x
       self.rect.bottom = y

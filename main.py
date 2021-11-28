@@ -23,7 +23,10 @@ clock = pygame.time.Clock()
 background_img = pygame.image.load(os.path.join("img", "background.png")).convert()
 player_img = pygame.image.load(os.path.join("img", "player.ico")).convert()
 bullet_img = pygame.image.load(os.path.join("img", "bullet.png")).convert()
-rock_img = pygame.image.load(os.path.join("img", "rock.png")).convert()
+# rock_img = pygame.image.load(os.path.join("img", "rock.png")).convert()
+rock_imgs = []
+for i in range(7):
+    rock_imgs.append(pygame.image.load(os.path.join("img", f"rock{i}.png")).convert())
 
 
 
@@ -60,14 +63,14 @@ class Player(pygame.sprite.Sprite):
 class Rock(pygame.sprite.Sprite):
   def __init__(self):
       pygame.sprite.Sprite.__init__(self)
-      self.image_original = rock_img
+      self.image_original = random.choice(rock_imgs)
       self.image_original.set_colorkey(BLACK)
       self.image = self.image_original.copy()
       self.rect = self.image.get_rect()
       self.radius = self.rect.width * 0.85 / 2
       #pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
       self.rect.x = random.randrange(0, WIDTH - self.rect.width)
-      self.rect.y = random.randrange(-100, -40) 
+      self.rect.y = random.randrange(-180, -100) 
       self.speedy = random.randrange(3, 8)
       self.speedx = random.randrange(-3, 3)
       self.total_degree = 0

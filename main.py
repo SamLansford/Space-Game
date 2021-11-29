@@ -28,7 +28,15 @@ rock_imgs = []
 for i in range(7):
     rock_imgs.append(pygame.image.load(os.path.join("img", f"rock{i}.png")).convert())
 
-
+# This code dispalys numbers text on top of the game
+font_name = pygame.font.match_font('arial')
+def draw_text(surf, text, size, x, y):
+    font = pygame.font.Font(font_name, size)
+    text_surface = font.render(text, True, WHITE)
+    text_rect = text_surface.get_rect()
+    text_rect.centerx = x
+    text_rect.top = y
+    surf.blit(text_surface, text_rect)
 
 class Player(pygame.sprite.Sprite):
   def __init__(self):
@@ -67,7 +75,7 @@ class Rock(pygame.sprite.Sprite):
       self.image_original.set_colorkey(BLACK)
       self.image = self.image_original.copy()
       self.rect = self.image.get_rect()
-      self.radius = self.rect.width * 0.85 / 2
+      self.radius = int(self.rect.width * 0.85 / 2)
       #pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
       self.rect.x = random.randrange(0, WIDTH - self.rect.width)
       self.rect.y = random.randrange(-180, -100) 
@@ -120,6 +128,8 @@ for i in range(8):
     r = Rock()
     all_sprites.add(r)
     rocks.add(r)
+score = 0
+
 
 #game loop
 running  = True
@@ -138,6 +148,7 @@ while running:
   all_sprites.update() 
   hits = pygame.sprite.groupcollide(rocks, bullets, True, True)
   for hit in hits:
+      score += hit.radius
       r = Rock()
       all_sprites.add(r)
       rocks.add(r)
@@ -150,6 +161,7 @@ while running:
   screen.fill(BLACK)
   screen.blit(background_img, (0,0))
   all_sprites.draw(screen)
+  draw_text(screen, str(score), 18, WIDTH / 2, 10)
   pygame.display.update()
 
 pygame.quit()

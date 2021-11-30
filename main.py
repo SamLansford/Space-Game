@@ -3,9 +3,10 @@ import pygame
 import random
 import os
 
+
 FPS = 60
-WIDTH = 500
-HEIGHT = 500
+WIDTH = 400
+HEIGHT = 400
 
 BLACK = (0, 0, 0)
 WHITE = (255,255,255)
@@ -15,6 +16,7 @@ YELLOW = (255, 255, 0)
 
 #Game initialization and creating Windows
 pygame.init()
+pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Game")
 clock = pygame.time.Clock()
@@ -27,6 +29,15 @@ bullet_img = pygame.image.load(os.path.join("img", "bullet.png")).convert()
 rock_imgs = []
 for i in range(7):
     rock_imgs.append(pygame.image.load(os.path.join("img", f"rock{i}.png")).convert())
+
+#Insert sounds
+shoot_sound = pygame.mixer.Sound(os.path.join("sound", "shoot.wav"))
+expl_sounds = [
+pygame.mixer.Sound(os.path.join("sound", "expl0.wav")),
+pygame.mixer.Sound(os.path.join("sound", "expl1.wav"))
+]
+pygame.mixer.music.load(os.path.join("sound", "background.ogg"))
+pygame.mixer.music.set_volume(0.4)
 
 # This code dispalys numbers text on top of the game
 font_name = pygame.font.match_font('arial')
@@ -66,6 +77,7 @@ class Player(pygame.sprite.Sprite):
       bullet = Bullet(self.rect.centerx, self.rect.top)
       all_sprites.add(bullet)
       bullets.add(bullet)
+      shoot_sound.play()
 
 
 class Rock(pygame.sprite.Sprite):
@@ -129,6 +141,7 @@ for i in range(8):
     all_sprites.add(r)
     rocks.add(r)
 score = 0
+pygame.mixer.music.play(-1)
 
 
 #game loop
@@ -148,6 +161,7 @@ while running:
   all_sprites.update() 
   hits = pygame.sprite.groupcollide(rocks, bullets, True, True)
   for hit in hits:
+      random.choice(expl_sounds).play()
       score += hit.radius
       r = Rock()
       all_sprites.add(r)

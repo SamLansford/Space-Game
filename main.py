@@ -5,7 +5,7 @@ import os
 
 
 FPS = 60
-WIDTH = 400
+WIDTH = 450
 HEIGHT = 400
 
 BLACK = (0, 0, 0)
@@ -92,6 +92,21 @@ def draw_lives(surf, lives, img, x, y):
         img_rect.x = x + 32 * i
         img_rect.y = y
         surf.blit(img, img_rect)
+
+def draw_init():
+    screen.blit(background_img, (0,0))
+    draw_text(screen, 'Space Game', 64, WIDTH/2, HEIGHT/4)
+    draw_text(screen, 'A, D to move left and right space to shoot', 22, WIDTH/2, HEIGHT/2)
+    draw_text(screen, 'Press any button to start the game', 18, WIDTH/2, HEIGHT*3/4)
+    pygame.display.update()
+    waiting = True
+    while waiting:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+          if event.type == pygame.QUIT:
+              pygame.quit()
+          elif event.type == pygame.KEYUP:
+              waiting = False
 
 
 class Player(pygame.sprite.Sprite):
@@ -250,22 +265,27 @@ class Power(pygame.sprite.Sprite):
         if self.rect.top > HEIGHT:
             self.kill()
 
-all_sprites = pygame.sprite.Group()
-rocks = pygame.sprite.Group()
-bullets = pygame.sprite.Group()
-powers = pygame.sprite.Group()
-player = Player()
-all_sprites.add(player)
-for i in range(8):
-    new_rock()
-score = 0
+
 pygame.mixer.music.play(-1)
 
 
 #game loop
+show_init = True
 running  = True
-
 while running:
+  if show_init:
+      draw_init()
+      show_init = False
+      all_sprites = pygame.sprite.Group()
+      rocks = pygame.sprite.Group()
+      bullets = pygame.sprite.Group()
+      powers = pygame.sprite.Group()
+      player = Player()
+      all_sprites.add(player)
+      for i in range(8):
+          new_rock()
+      score = 0
+
   clock.tick(FPS)
   #get input
   for event in pygame.event.get():
@@ -316,7 +336,7 @@ while running:
           gun_sound.play()
 
   if player.lives == 0 and not(death_exp.alive()):
-      running = False
+      show_init = True
 
   #display screen
   screen.fill(BLACK)
